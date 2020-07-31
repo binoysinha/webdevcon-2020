@@ -1,0 +1,2576 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>WebDevCon</title>
+
+    <meta
+      name="description"
+      content="A framework for easily creating beautiful presentations using HTML"
+    />
+    <meta name="author" content="Oleg Ilyenko" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
+    />
+
+    <link rel="stylesheet" href="css/reveal.css" />
+    <link rel="stylesheet" href="css/theme/white.css" id="theme" />
+    <link rel="stylesheet" href="assets/custom.css" />
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css" />
+
+    <script src="assets/offline/fonts.js"></script>
+
+    <script src="https://use.typekit.net/jor2kyz.js"></script>
+    <script>
+      try {
+        Typekit.load({
+          async: true,
+        });
+      } catch (e) {}
+    </script>
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.type = "text/css";
+      link.href = window.location.search.match(/print-pdf/gi)
+        ? "css/print/pdf.css"
+        : "css/print/paper.css";
+      document.getElementsByTagName("head")[0].appendChild(link);
+    </script>
+
+    <!--[if lt IE 9]>
+      <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="assets/highlight/solarized_light.css" />
+
+  </head>
+
+  <body>
+    <div id="credit" style="display: none;"></div>
+
+    <div class="reveal">
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section data-background="##DDDDDD" class="first-slide">
+          <!-- <img src="assets/img/graphql-white.svg" class="logo-image" /> -->
+          <h2 style="text-align: center;" class="title-font">
+            Rendering Large Lists &<br />
+            Performance Optimization
+          </h2>
+        </section>
+        <section>
+          <h2>Who I am?</h2>
+          <div class="pr-info">
+            <div>
+              <p>Binoy Sinha</p>
+              <ul>
+                <li>FEE-II</li>
+                <li>India-AdTech</li>
+                <li>sinbinoy@</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2>What's the Problem?</h2>
+          <ul>
+            <li class="fragment fade-in" data-fragment-index="1">
+              Large list will create lots of DOM Nodes
+            </li>
+            <li class="fragment fade-in" data-fragment-index="2">
+              Slows down initial rendering by browsers
+            </li>
+            <li class="fragment fade-in" data-fragment-index="3">
+              May cause UI freezes when scrolling
+            </li>
+            <li class="fragment fade-in" data-fragment-index="4">
+              User experience will deteriote
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>4 ways to render larger lists</h2>
+          <ul>
+            <li class="fragment fade-in" data-fragment-index="1">
+              Pagination
+            </li>
+            <li class="fragment fade-in" data-fragment-index="2">
+              Infinite scroll
+            </li>
+            <li class="fragment fade-in" data-fragment-index="3">
+              react-virtualized
+            </li>
+            <li class="fragment fade-in" data-fragment-index="4">
+              react-window
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Pagination</h2>
+          <li class="fragment fade-in" data-fragment-index="1">
+            It allows you to render data in pages
+          </li>
+          <li class="fragment fade-in" data-fragment-index="2">
+            You control the amount of data that is shown on the page
+          </li>
+          <li class="fragment fade-in" data-fragment-index="3">
+            DOM tree is not stressed
+          </li>
+          <li class="fragment fade-in" data-fragment-index="4">
+            <img src="assets/img/pagination.png" />
+          </li>
+        </section>
+        <section>
+          <h2>Infinite scroll</h2>
+          <li class="fragment fade-in" data-fragment-index="1">
+            On initial page load, only a subset of data is loaded
+          </li>
+          <li class="fragment fade-in" data-fragment-index="2">
+            As you scroll down the page, more data is appended
+          </li>
+          <li class="fragment fade-in" data-fragment-index="3">
+            Google Music's artist list, Facebook timeline, Twitter's live feed
+          </li>
+        </section>
+        <section>
+          <h2>react-virtualized</h2>
+          <li class="fragment fade-in" data-fragment-index="1">
+            Specifically designed for rendering large lists and tabular data
+          </li>
+          <li class="fragment fade-in" data-fragment-index="2">
+            Uses a technique similar to infinite scroll called windowing
+          </li>
+          <li class="fragment fade-in" data-fragment-index="3">
+            With windowing, only the visible parts of a list are
+            rendered to the screen
+          </li>
+        </section>
+        <section>
+          <h2>react-window</h2>
+          <li class="fragment fade-in" data-fragment-index="1">
+            It is complete rewrite of react-virtualized
+          </li>
+          <li class="fragment fade-in" data-fragment-index="2">
+            It aims to address shortcomings related to size and speed
+          </li>
+          <li class="fragment fade-in" data-fragment-index="3">
+            Covers more edge cases than react-virtualized
+          </li>
+
+        </section>
+        <section>
+          <h2>Size comparsions</h2>
+          <img src="assets/img/bundlephobia@2x.png">
+        </section>
+        <section>
+          <h2>Windowing...</h2>
+          <ul>
+            <li class="fragment fade-in" data-fragment-index="1">
+              It is the concept of only rendering what is visible to the user
+            </li>
+            <li class="fragment fade-in" data-fragment-index="2">
+              Rendered elements is a very small subset of entire list
+            </li>
+            <li class="fragment fade-in" data-fragment-index="3">
+              "window" of visible content moves when the user continues to
+              scroll
+            </li>
+            <li class="fragment fade-in" data-fragment-index="4">
+              DOM nodes that exit the "window" are recycled
+            </li>
+            <li class="fragment fade-in" data-fragment-index="5">
+              Improves both the rendering and scrolling performance of the list.
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>DOM recycling</h2>
+          <div class="img-block">
+            <ul>
+              <li>
+                DOM nodes are cheap, but not free.
+              </li>
+              <li>
+                Bigger DOM === Expensive process.
+              </li>
+              <li>
+                Low DOM count === Faster process
+              </li>
+              <li>
+                Reuse already created DOM elements that are off-screen instead
+                of creating new ones
+              </li>
+            </ul>
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="-200 -400 1400 1400"
+                class="infscroll"
+                preserveAspectRatio="xMidYMid meet"
+              >
+                <defs>
+                  <linearGradient
+                    id="linear"
+                    x1="0%"
+                    y1="0%"
+                    x2="0%"
+                    y2="1000%"
+                  >
+                    <stop offset="0%" stop-color="rgba(0, 0, 255, 0)"></stop>
+                    <stop offset="5%" stop-color="rgba(0, 0, 255, 1)"></stop>
+                  </linearGradient>
+                  <g id="item">
+                    <rect x="100" y="0" width="600" height="40"></rect>
+                  </g>
+                </defs>
+                <g id="runway">
+                  <rect x="50" y="-500" width="700" height="1480"></rect>
+                </g>
+                <text x="40" y="34" transform="rotate(-90)" font-size="72">
+                  Runway
+                </text>
+                <g class="mscroller">
+                  <rect x="60" y="960" width="10" height="10"></rect>
+                  <text x="-120" y="980" font-size="40">Sentinel</text>
+                </g>
+                <g class="items">
+                  <use xlink:href="#item" x="0" y="-120"></use>
+                  <use xlink:href="#item" x="0" y="-60"></use>
+                  <use xlink:href="#item" x="0" y="0"></use>
+                  <use xlink:href="#item" x="0" y="60"></use>
+                  <use xlink:href="#item" x="0" y="120"></use>
+                  <use xlink:href="#item" x="0" y="180"></use>
+                  <use xlink:href="#item" x="0" y="240"></use>
+                  <use xlink:href="#item" x="0" y="300"></use>
+                  <use xlink:href="#item" x="0" y="360"></use>
+                  <use xlink:href="#item" x="0" y="420"></use>
+                  <use xlink:href="#item" x="0" y="480"></use>
+                  <use xlink:href="#item" x="0" y="540"></use>
+                  <use xlink:href="#item" x="0" y="600"></use>
+                  <use xlink:href="#item" x="0" y="660"></use>
+                  <use xlink:href="#item" x="0" y="720"></use>
+                </g>
+                <g id="browser">
+                  <rect
+                    class="whitener"
+                    x="0"
+                    y="-600"
+                    width="800"
+                    height="600"
+                  ></rect>
+                  <rect
+                    class="whitener"
+                    x="0"
+                    y="600"
+                    width="800"
+                    height="600"
+                  ></rect>
+                  <rect
+                    class="whitener"
+                    x="-5000"
+                    y="-600"
+                    width="5000"
+                    height="1800"
+                  ></rect>
+                  <rect
+                    class="whitener"
+                    x="800"
+                    y="-600"
+                    width="5000"
+                    height="1800"
+                  ></rect>
+                  <g class="viewport">
+                    <rect x="0" y="0" width="800" height="600"></rect>
+                    <text
+                      x="-600"
+                      y="-16"
+                      transform="rotate(-90)"
+                      font-size="72"
+                    >
+                      Viewport
+                    </text>
+                  </g>
+                </g>
+              </svg>
+              <small class="src">
+                https://developers.google.com/web/updates/2016/07/infinite-scroller
+              </small>
+            </div>
+          </div>
+        </section>
+        <section>
+          <h2>How does windowing work?</h2>
+        </section>
+        <section>
+          <li>
+            Having a small container DOM element with relative positioning
+            (window)
+          </li>
+          <svg
+            height="304"
+            width="300"
+            viewBox="-75 0 300 304"
+            preserveAspectRatio="xMinYMax meet"
+          >
+            <g class="HowWorksGroup">
+              <g class="HowWorksHidden">
+                <line
+                  x1="25"
+                  y1="2"
+                  x2="125"
+                  y2="2"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="32"
+                  x2="125"
+                  y2="32"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="62"
+                  x2="125"
+                  y2="62"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="92"
+                  x2="125"
+                  y2="92"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="122"
+                  x2="125"
+                  y2="122"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="152"
+                  x2="125"
+                  y2="152"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="182"
+                  x2="125"
+                  y2="182"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="212"
+                  x2="125"
+                  y2="212"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="242"
+                  x2="125"
+                  y2="242"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="272"
+                  x2="125"
+                  y2="272"
+                  class="HowWorksInnerLine"
+                ></line>
+                <rect
+                  x="25"
+                  y="2"
+                  width="100"
+                  height="300"
+                  class="HowWorksInnerRect"
+                ></rect>
+              </g>
+              <g class="HowWorksRowGroup HowWorksHidden">
+                <g>
+                  <rect
+                    x="25"
+                    y="2"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="17"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="32"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="47"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="62"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="77"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="92"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="107"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="122"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="137"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="152"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="167"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="182"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="197"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="212"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="227"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="242"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="257"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="272"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="287"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+              </g>
+              <g>
+                <g>
+                  <defs>
+                    <pattern
+                      id="crossHatchRectPattern"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        class="CrossHatchRectPattern"
+                      ></line>
+                    </pattern>
+                  </defs>
+                  <rect
+                    x="25"
+                    y="0"
+                    width="100"
+                    height="80"
+                    class="CrossHatchRectHidden"
+                    fill="url(#crossHatchRectPattern)"
+                  ></rect>
+                </g>
+                <g>
+                  <defs>
+                    <pattern
+                      id="crossHatchRectPattern"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        class="CrossHatchRectPattern"
+                      ></line>
+                    </pattern>
+                  </defs>
+                  <rect
+                    x="25"
+                    y="170"
+                    width="100"
+                    height="134"
+                    class="CrossHatchRectHidden"
+                    fill="url(#crossHatchRectPattern)"
+                  ></rect>
+                </g>
+              </g>
+              <g class="HowWorksOuterGroup HowWorksHidden HowWorksVisible">
+                <g>
+                  <line
+                    x1="102"
+                    y1="72"
+                    x2="25"
+                    y2="112"
+                    class="HowWorksViewportLine HowWorksHidden"
+                  ></line>
+                  <line
+                    x1="102"
+                    y1="158"
+                    x2="25"
+                    y2="198"
+                    class="HowWorksViewportLine HowWorksHidden"
+                  ></line>
+                  <line
+                    x1="198"
+                    y1="72"
+                    x2="125"
+                    y2="112"
+                    class="HowWorksViewportLine HowWorksHidden"
+                  ></line>
+                  <line
+                    x1="198"
+                    y1="158"
+                    x2="125"
+                    y2="198"
+                    class="HowWorksViewportLine HowWorksHidden"
+                  ></line>
+                </g>
+                <g class="HowWorksHidden">
+                  <rect
+                    x="190"
+                    y="72"
+                    width="10"
+                    height="86"
+                    class="HowWorksScrollTrack"
+                  ></rect>
+                  <rect
+                    x="192"
+                    y="100"
+                    width="5"
+                    rx="3"
+                    ry="3"
+                    height="15"
+                    class="HowWorksScrollThumb"
+                  ></rect>
+                </g>
+                <g>
+                  <rect
+                    x="100"
+                    y="70"
+                    width="100"
+                    height="90"
+                    class="HowWorksOuterRect"
+                  ></rect>
+                  <text
+                    x="150"
+                    y="115"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText LabeledSvgTextMono"
+                  >
+                    &lt;ul&gt;
+                  </text>
+                </g>
+              </g>
+            </g>
+          </svg>
+          <span class="src"></p>
+            <a href="https://bvaughn.github.io/forward-js-2017/#/12/5"
+              >"How does windowing work?"</a
+            >
+            by Brian Vaughn
+          </span>
+        </section>
+        <section>
+          <li>
+            Large number of item
+          </li>
+
+          <svg
+            height="304"
+            width="300"
+            viewBox="-75 0 300 304"
+            preserveAspectRatio="xMinYMax meet"
+          >
+            <g class="HowWorksGroup">
+              <g class="HowWorksHidden HowWorksVisible">
+                <line
+                  x1="25"
+                  y1="2"
+                  x2="125"
+                  y2="2"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="32"
+                  x2="125"
+                  y2="32"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="62"
+                  x2="125"
+                  y2="62"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="92"
+                  x2="125"
+                  y2="92"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="122"
+                  x2="125"
+                  y2="122"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="152"
+                  x2="125"
+                  y2="152"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="182"
+                  x2="125"
+                  y2="182"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="212"
+                  x2="125"
+                  y2="212"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="242"
+                  x2="125"
+                  y2="242"
+                  class="HowWorksInnerLine"
+                ></line>
+                <line
+                  x1="25"
+                  y1="272"
+                  x2="125"
+                  y2="272"
+                  class="HowWorksInnerLine"
+                ></line>
+                <rect
+                  x="25"
+                  y="2"
+                  width="100"
+                  height="300"
+                  class="HowWorksInnerRect"
+                ></rect>
+              </g>
+              <g class="HowWorksRowGroup HowWorksHidden">
+                <g>
+                  <rect
+                    x="25"
+                    y="2"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="17"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="32"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="47"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="62"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="77"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="92"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="107"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="122"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="137"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="152"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="167"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="182"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="197"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="212"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="227"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="242"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="257"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="272"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="287"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+              </g>
+              <g>
+                <g>
+                  <defs>
+                    <pattern
+                      id="crossHatchRectPattern"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        class="CrossHatchRectPattern"
+                      ></line>
+                    </pattern>
+                  </defs>
+                  <rect
+                    x="25"
+                    y="0"
+                    width="100"
+                    height="80"
+                    class="CrossHatchRectHidden"
+                    fill="url(#crossHatchRectPattern)"
+                  ></rect>
+                </g>
+                <g>
+                  <defs>
+                    <pattern
+                      id="crossHatchRectPattern"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        class="CrossHatchRectPattern"
+                      ></line>
+                    </pattern>
+                  </defs>
+                  <rect
+                    x="25"
+                    y="170"
+                    width="100"
+                    height="134"
+                    class="CrossHatchRectHidden"
+                    fill="url(#crossHatchRectPattern)"
+                  ></rect>
+                </g>
+              </g>
+              <g class="HowWorksOuterGroup HowWorksHidden HowWorksVisible">
+                <g>
+                  <line
+                    x1="102"
+                    y1="72"
+                    x2="25"
+                    y2="112"
+                    class="HowWorksViewportLine HowWorksHidden"
+                  ></line>
+                  <line
+                    x1="102"
+                    y1="158"
+                    x2="25"
+                    y2="198"
+                    class="HowWorksViewportLine HowWorksHidden"
+                  ></line>
+                  <line
+                    x1="198"
+                    y1="72"
+                    x2="125"
+                    y2="112"
+                    class="HowWorksViewportLine HowWorksHidden"
+                  ></line>
+                  <line
+                    x1="198"
+                    y1="158"
+                    x2="125"
+                    y2="198"
+                    class="HowWorksViewportLine HowWorksHidden"
+                  ></line>
+                </g>
+                <g class="HowWorksHidden">
+                  <rect
+                    x="190"
+                    y="72"
+                    width="10"
+                    height="86"
+                    class="HowWorksScrollTrack"
+                  ></rect>
+                  <rect
+                    x="192"
+                    y="100"
+                    width="5"
+                    rx="3"
+                    ry="3"
+                    height="15"
+                    class="HowWorksScrollThumb"
+                  ></rect>
+                </g>
+                <g>
+                  <rect
+                    x="100"
+                    y="70"
+                    width="100"
+                    height="90"
+                    class="HowWorksOuterRect"
+                  ></rect>
+                  <text
+                    x="150"
+                    y="115"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText LabeledSvgTextMono"
+                  >
+                    &lt;ul&gt;
+                  </text>
+                </g>
+              </g>
+            </g>
+          </svg>
+          <span class="src"></p>
+            <a href="https://bvaughn.github.io/forward-js-2017/#/12/5"
+              >"How does windowing work?"</a
+            >
+            by Brian Vaughn
+          </span>
+        </section>
+        <section>
+          <li>
+            Having a big DOM element for scrolling
+          </li>
+          <svg
+            height="304"
+            width="300"
+            viewBox="-50 0 300 304"
+            preserveAspectRatio="xMinYMax meet"
+          >
+            <g class="HowWorksGroup HowWorksGroupSkewed">
+              <g class="HowWorksHidden HowWorksVisible">
+                <line
+                  x1="25"
+                  y1="2"
+                  x2="125"
+                  y2="2"
+                  class="HowWorksInnerLine HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="32"
+                  x2="125"
+                  y2="32"
+                  class="HowWorksInnerLine HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="62"
+                  x2="125"
+                  y2="62"
+                  class="HowWorksInnerLine HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="92"
+                  x2="125"
+                  y2="92"
+                  class="HowWorksInnerLine HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="122"
+                  x2="125"
+                  y2="122"
+                  class="HowWorksInnerLine HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="152"
+                  x2="125"
+                  y2="152"
+                  class="HowWorksInnerLine HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="182"
+                  x2="125"
+                  y2="182"
+                  class="HowWorksInnerLine HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="212"
+                  x2="125"
+                  y2="212"
+                  class="HowWorksInnerLine HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="242"
+                  x2="125"
+                  y2="242"
+                  class="HowWorksInnerLine HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="272"
+                  x2="125"
+                  y2="272"
+                  class="HowWorksInnerLine HowWorksInnerLineAnimated"
+                ></line>
+                <rect
+                  x="25"
+                  y="2"
+                  width="100"
+                  height="300"
+                  class="HowWorksInnerRect"
+                ></rect>
+              </g>
+              <g class="HowWorksRowGroup HowWorksHidden">
+                <g>
+                  <rect
+                    x="25"
+                    y="2"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="17"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="32"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="47"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="62"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="77"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="92"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="107"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="122"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="137"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="152"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="167"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="182"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="197"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="212"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="227"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="242"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="257"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="272"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="287"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+              </g>
+              <g>
+                <g>
+                  <defs>
+                    <pattern
+                      id="crossHatchRectPattern"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        class="CrossHatchRectPattern"
+                      ></line>
+                    </pattern>
+                  </defs>
+                  <rect
+                    x="25"
+                    y="0"
+                    width="100"
+                    height="80"
+                    class="CrossHatchRectHidden"
+                    fill="url(#crossHatchRectPattern)"
+                  ></rect>
+                </g>
+                <g>
+                  <defs>
+                    <pattern
+                      id="crossHatchRectPattern"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        class="CrossHatchRectPattern"
+                      ></line>
+                    </pattern>
+                  </defs>
+                  <rect
+                    x="25"
+                    y="170"
+                    width="100"
+                    height="134"
+                    class="CrossHatchRectHidden"
+                    fill="url(#crossHatchRectPattern)"
+                  ></rect>
+                </g>
+              </g>
+              <g
+                class="HowWorksOuterGroup HowWorksHidden HowWorksVisible HowWorksOuterRectShifted"
+              >
+                <g>
+                  <line
+                    x1="102"
+                    y1="72"
+                    x2="25"
+                    y2="112"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                  <line
+                    x1="102"
+                    y1="158"
+                    x2="25"
+                    y2="198"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                  <line
+                    x1="198"
+                    y1="72"
+                    x2="125"
+                    y2="112"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                  <line
+                    x1="198"
+                    y1="158"
+                    x2="125"
+                    y2="198"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                </g>
+                <g class="HowWorksHidden">
+                  <rect
+                    x="190"
+                    y="72"
+                    width="10"
+                    height="86"
+                    class="HowWorksScrollTrack"
+                  ></rect>
+                  <rect
+                    x="192"
+                    y="100"
+                    width="5"
+                    rx="3"
+                    ry="3"
+                    height="15"
+                    class="HowWorksScrollThumb"
+                  ></rect>
+                </g>
+                <g>
+                  <rect
+                    x="100"
+                    y="70"
+                    width="100"
+                    height="90"
+                    class="HowWorksOuterRect"
+                  ></rect>
+                  <text
+                    x="150"
+                    y="115"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText LabeledSvgTextMono"
+                  >
+                    &lt;ul&gt;
+                  </text>
+                </g>
+              </g>
+            </g>
+          </svg>
+          <span class="src"></p>
+            <a href="https://bvaughn.github.io/forward-js-2017/#/12/5"
+              >"How does windowing work?"</a
+            >
+            by Brian Vaughn
+          </span>
+        </section>
+        <section>
+          <li>
+            Absolutely positioning children inside the container
+          </li>
+          <svg
+            height="304"
+            width="300"
+            viewBox="-50 0 300 304"
+            preserveAspectRatio="xMinYMax meet"
+          >
+            <g class="HowWorksGroup HowWorksGroupSkewed">
+              <g class="HowWorksHidden HowWorksVisible">
+                <line
+                  x1="25"
+                  y1="2"
+                  x2="125"
+                  y2="2"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="32"
+                  x2="125"
+                  y2="32"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="62"
+                  x2="125"
+                  y2="62"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="92"
+                  x2="125"
+                  y2="92"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="122"
+                  x2="125"
+                  y2="122"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="152"
+                  x2="125"
+                  y2="152"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="182"
+                  x2="125"
+                  y2="182"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="212"
+                  x2="125"
+                  y2="212"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="242"
+                  x2="125"
+                  y2="242"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="272"
+                  x2="125"
+                  y2="272"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <rect
+                  x="25"
+                  y="2"
+                  width="100"
+                  height="300"
+                  class="HowWorksInnerRect HowWorksHidden"
+                ></rect>
+              </g>
+              <g class="HowWorksRowGroup HowWorksHidden HowWorksVisible">
+                <g>
+                  <rect
+                    x="25"
+                    y="2"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="17"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="32"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="47"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="62"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="77"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="92"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="107"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="122"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="137"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="152"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="167"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="182"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="197"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="212"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="227"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="242"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="257"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="272"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="287"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksVisible"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+              </g>
+              <g>
+                <g>
+                  <defs>
+                    <pattern
+                      id="crossHatchRectPattern"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        class="CrossHatchRectPattern"
+                      ></line>
+                    </pattern>
+                  </defs>
+                  <rect
+                    x="25"
+                    y="0"
+                    width="100"
+                    height="80"
+                    class="CrossHatchRectHidden CrossHatchRectVisible"
+                    fill="url(#crossHatchRectPattern)"
+                  ></rect>
+                </g>
+                <g>
+                  <defs>
+                    <pattern
+                      id="crossHatchRectPattern"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        class="CrossHatchRectPattern"
+                      ></line>
+                    </pattern>
+                  </defs>
+                  <rect
+                    x="25"
+                    y="170"
+                    width="100"
+                    height="134"
+                    class="CrossHatchRectHidden CrossHatchRectVisible"
+                    fill="url(#crossHatchRectPattern)"
+                  ></rect>
+                </g>
+              </g>
+              <g
+                class="HowWorksOuterGroup HowWorksHidden HowWorksVisible HowWorksOuterRectShifted"
+              >
+                <g>
+                  <line
+                    x1="102"
+                    y1="72"
+                    x2="25"
+                    y2="112"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                  <line
+                    x1="102"
+                    y1="158"
+                    x2="25"
+                    y2="198"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                  <line
+                    x1="198"
+                    y1="72"
+                    x2="125"
+                    y2="112"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                  <line
+                    x1="198"
+                    y1="158"
+                    x2="125"
+                    y2="198"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                </g>
+                <g class="HowWorksHidden HowWorksVisible">
+                  <rect
+                    x="190"
+                    y="72"
+                    width="10"
+                    height="86"
+                    class="HowWorksScrollTrack"
+                  ></rect>
+                  <rect
+                    x="192"
+                    y="100"
+                    width="5"
+                    rx="3"
+                    ry="3"
+                    height="15"
+                    class="HowWorksScrollThumb"
+                  ></rect>
+                </g>
+                <g>
+                  <rect
+                    x="100"
+                    y="70"
+                    width="100"
+                    height="90"
+                    class="HowWorksOuterRect"
+                  ></rect>
+                  <text
+                    x="150"
+                    y="115"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText LabeledSvgTextMono"
+                  >
+                    &lt;ul&gt;
+                  </text>
+                </g>
+              </g>
+            </g>
+          </svg>
+          <span class="src"></p>
+            <a href="https://bvaughn.github.io/forward-js-2017/#/12/5"
+              >"How does windowing work?"</a
+            >
+            by Brian Vaughn
+          </span>
+        </section>
+        <section>
+          <svg
+            height="304"
+            width="300"
+            viewBox="0 0 300 304"
+            preserveAspectRatio="xMinYMax meet"
+          >
+            <g class="HowWorksGroup HowWorksGroupSkewed">
+              <g class="HowWorksHidden HowWorksVisible">
+                <line
+                  x1="25"
+                  y1="2"
+                  x2="125"
+                  y2="2"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="32"
+                  x2="125"
+                  y2="32"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="62"
+                  x2="125"
+                  y2="62"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="92"
+                  x2="125"
+                  y2="92"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="122"
+                  x2="125"
+                  y2="122"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="152"
+                  x2="125"
+                  y2="152"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="182"
+                  x2="125"
+                  y2="182"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="212"
+                  x2="125"
+                  y2="212"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="242"
+                  x2="125"
+                  y2="242"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <line
+                  x1="25"
+                  y1="272"
+                  x2="125"
+                  y2="272"
+                  class="HowWorksInnerLine HowWorksHidden HowWorksInnerLineAnimated"
+                ></line>
+                <rect
+                  x="25"
+                  y="2"
+                  width="100"
+                  height="300"
+                  class="HowWorksInnerRect HowWorksHidden"
+                ></rect>
+              </g>
+              <g
+                class="HowWorksRowGroup HowWorksHidden HowWorksVisible HowWorksScrollingLoop"
+              >
+                <g>
+                  <rect
+                    x="25"
+                    y="2"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="17"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksHidden"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="32"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="47"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksHidden"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="62"
+                    width="100"
+                    height="30"
+                    class="HowWorksTopConditionalScrollingFill HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="77"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksHidden"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="92"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="107"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksHidden"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="122"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="137"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksHidden"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="152"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="167"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksHidden"
+                  >
+                    Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="182"
+                    width="100"
+                    height="30"
+                    class="HowWorksBottomConditionalScrollingFill HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="197"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksHidden"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="212"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="227"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksHidden"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="242"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="257"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksHidden"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+                <g>
+                  <rect
+                    x="25"
+                    y="272"
+                    width="100"
+                    height="30"
+                    class="HowWorksRowNotRendered"
+                  ></rect>
+                  <text
+                    x="75"
+                    y="287"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText HowWorksHidden"
+                  >
+                    Not Rendered
+                  </text>
+                </g>
+              </g>
+              <g>
+                <g>
+                  <defs>
+                    <pattern
+                      id="crossHatchRectPattern"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        class="CrossHatchRectPattern"
+                      ></line>
+                    </pattern>
+                  </defs>
+                  <rect
+                    x="25"
+                    y="0"
+                    width="100"
+                    height="80"
+                    class="CrossHatchRectHidden"
+                    fill="url(#crossHatchRectPattern)"
+                  ></rect>
+                </g>
+                <g>
+                  <defs>
+                    <pattern
+                      id="crossHatchRectPattern"
+                      width="10"
+                      height="10"
+                      patternTransform="rotate(45 0 0)"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <line
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="10"
+                        class="CrossHatchRectPattern"
+                      ></line>
+                    </pattern>
+                  </defs>
+                  <rect
+                    x="25"
+                    y="170"
+                    width="100"
+                    height="134"
+                    class="CrossHatchRectHidden"
+                    fill="url(#crossHatchRectPattern)"
+                  ></rect>
+                </g>
+              </g>
+              <g
+                class="HowWorksOuterGroup HowWorksHidden HowWorksVisible HowWorksOuterRectShifted"
+              >
+                <g>
+                  <line
+                    x1="102"
+                    y1="72"
+                    x2="25"
+                    y2="112"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                  <line
+                    x1="102"
+                    y1="158"
+                    x2="25"
+                    y2="198"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                  <line
+                    x1="198"
+                    y1="72"
+                    x2="125"
+                    y2="112"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                  <line
+                    x1="198"
+                    y1="158"
+                    x2="125"
+                    y2="198"
+                    class="HowWorksViewportLine HowWorksHidden HowWorksVisible"
+                  ></line>
+                </g>
+                <g class="HowWorksHidden HowWorksVisible">
+                  <rect
+                    x="190"
+                    y="72"
+                    width="10"
+                    height="86"
+                    class="HowWorksScrollTrack"
+                  ></rect>
+                  <rect
+                    x="192"
+                    y="100"
+                    width="5"
+                    rx="3"
+                    ry="3"
+                    height="15"
+                    class="HowWorksScrollThumb HowWorksScrollingThumbLoop"
+                  ></rect>
+                </g>
+                <g>
+                  <rect
+                    x="100"
+                    y="70"
+                    width="100"
+                    height="90"
+                    class="HowWorksOuterRect"
+                  ></rect>
+                  <text
+                    x="150"
+                    y="115"
+                    text-anchor="middle"
+                    alignment-baseline="central"
+                    class="LabeledSvgText LabeledSvgTextMono"
+                  >
+                    &lt;ul&gt;
+                  </text>
+                </g>
+              </g>
+            </g>
+          </svg>
+        </section>
+
+        <section>
+          <h2><a href="http://localhost:3001" target="_blank">Demo</a></h2>
+        </section>
+        <section>
+          <h2>Code Snippets</h2>
+          <div class="img-block">
+            <figure>
+              <figcaption>react-window</figcaption>
+              <img src="assets/img/window.png" class="vsm-img" />
+            </figure>
+            <figure>
+              <figcaption>Normal list</figcaption>
+              <img src="assets/img/non-window.png" class="vsm-img" />
+            </figure>
+          </div>
+        </section>
+        <section>
+          <h2>DOM Nodes</h2>
+          <div class="img-block">
+            <figure>
+              <figcaption>react-window</figcaption>
+              <img src="assets/img/DOM_window.png" class="sm-img" />
+            </figure>
+            <figure>
+              <figcaption>Normal list</figcaption>
+              <img src="assets/img/DOM_normal.png" class="sm-img" />
+            </figure>
+          </div>
+        </section>
+        <section>
+          <h2>What can slow down an App?</h2>
+          <ul class="fragment fade-in" data-fragment-index="1">
+            <li class="fragment fade-in" data-fragment-index="2">
+              DOM elements and mutations.
+            </li>
+            <li class="fragment fade-in" data-fragment-index="3">
+              Repaints and reflows
+            </li>
+            <li class="fragment fade-in" data-fragment-index="4">
+              Garbage Collection
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Lets talk about Performance...</h2>
+          <img
+            src="https://miro.medium.com/max/12000/1*Wd2ESjtLbc0LczRGIp7p-A@2x.png"
+          />
+        </section>
+        <section>
+          <h2>Lighthouse Scores</h2>
+          <div class="img-block">
+            <figure>
+              <figcaption>react-window</figcaption>
+              <img src="assets/img/lh_score_window.png" class="sm-img" />
+            </figure>
+            <figure>
+              <figcaption>Normal list</figcaption>
+              <img src="assets/img/lh_score_normal.png" class="sm-img" />
+            </figure>
+          </div>
+        </section>
+        <section>
+          <h2>Rendering time</h2>
+          <div class="img-block">
+            <figure>
+              <figcaption>react-window</figcaption>
+              <img src="assets/img/rendering_window.png" class="sm-img" />
+            </figure>
+            <figure>
+              <figcaption>Normal list</figcaption>
+              <img src="assets/img/rendering_normal.png" class="sm-img" />
+            </figure>
+          </div>
+        </section>
+        <section>
+          <h2>Performance Monitor</h2>
+          <div class="img-block">
+            <figure>
+              <figcaption>react-window</figcaption>
+              <img src="assets/img/Perf_monitor_window.png" class="sm-img" />
+            </figure>
+            <figure>
+              <figcaption>Normal list</figcaption>
+              <img src="assets/img/perf_monitor.png" class="sm-img" />
+            </figure>
+          </div>
+        </section>
+
+        <!-- GraphQL Disclaimers -->
+        <section>
+          <h2>User-centric performance metrics</h2>
+          <ol class="fragment fade-in" data-fragment-index="1">
+            <li class="fragment fade-in" data-fragment-index="2">
+              First contentful paint (FCP)
+            </li>
+            <li class="fragment fade-in" data-fragment-index="3">
+              Largest contentful paint (LCP)
+            </li>
+            <li class="fragment fade-in" data-fragment-index="4">
+              First input delay (FID)
+            </li>
+            <li class="fragment fade-in" data-fragment-index="5">
+              Time to Interactive (TTI)
+            </li>
+            <li class="fragment fade-in" data-fragment-index="6">
+              Total blocking time (TBT)
+            </li>
+            <li class="fragment fade-in" data-fragment-index="7">
+              Cumulative layout shift (CLS)
+            </li>
+          </ol>
+        </section>
+        <section>
+          <h2>Optimize</h2>
+          <ul class="fragment fade-in" data-fragment-index="1">
+            <li class="fragment fade-in" data-fragment-index="2">
+              Not going to talk about, CDN, caching, assets size etc
+            </li>
+            <li class="fragment fade-in" data-fragment-index="3">
+              Tech and library choices. (ex momentjs and date-fns)
+            </li>
+            <li class="fragment fade-in" data-fragment-index="4">
+              Balance between external packages and custom packages
+            </li>
+            <li class="fragment fade-in" data-fragment-index="5">
+              Making trade-offs for user-experience
+            </li>
+            <li class="fragment fade-in" data-fragment-index="6">
+              Reusable and modular code
+            </li>
+            <li class="fragment fade-in" data-fragment-index="7">
+              Don't do premature optimization
+            </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Set Performance Budgets</h2>
+          <ul style="width: 67%">
+            <li class="fragment fade-in" data-fragment-index="1">
+              It is a limit for pages which the team is not allowed to exceed
+            </li>
+            <li class="fragment fade-in" data-fragment-index="2">
+              Metrics for perf budgets can include
+              <img src="assets/img/perf_metrics.png" class="vsm-img">
+            </li>
+            <li class="fragment fade-in" data-fragment-index="3">
+              Use Webpack’s built-in support for perf budgets
+            </li>
+            <li class="fragment fade-in" data-fragment-index="4">
+              Use tools like <a href="https://performancebudget.io" target="_blank">performance budget</a> at planning stage
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Closing thoughts...</h2>
+         <p>
+          Frontend optimization can seem like an intimidating endeavor, but you can greatly improve the loading speed of your website by applying the principles in this presentation. Remember, <strong>the faster your website loads, the better user experience your visitors will have</strong>. Therefore, ultimately benefiting you and your visitors alike.
+</p>
+</section>
+        <section>
+          <img src="assets/img/end.jpg" height="500px" width="700px" alt="" />
+          <br />
+          <br />
+
+          <h2>Thank you !</h2>
+        </section>
+      </div>
+      <p class="amzn-link">Amazon Confidential</p>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+    <script src="assets/jquery-2.1.3.min.js"></script>
+    <script src="assets/custom.js"></script>
+
+    <script>
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: "slide", // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          {
+            src: "lib/js/classList.js",
+            condition: function () {
+              return !document.body.classList;
+            },
+          },
+          {
+            src: "plugin/markdown/marked.js",
+            condition: function () {
+              return !!document.querySelector("[data-markdown]");
+            },
+          },
+          {
+            src: "plugin/markdown/markdown.js",
+            condition: function () {
+              return !!document.querySelector("[data-markdown]");
+            },
+          },
+          {
+            src: "plugin/highlight/highlight.js",
+            async: true,
+            condition: function () {
+              return !!document.querySelector("pre code");
+            },
+            callback: function () {
+              hljs.initHighlightingOnLoad();
+            },
+          },
+          {
+            src: "plugin/zoom-js/zoom.js",
+            async: true,
+          },
+          {
+            src: "plugin/notes/notes.js",
+            async: true,
+          },
+        ],
+      });
+    </script>
+  </body>
+</html>
